@@ -11,14 +11,11 @@ export default defineConfig({
     hydrogen(),
     oxygen(),
     remix({
-      presets: [hydrogen.v3preset()],
+      presets: [hydrogen.preset()],
       future: {
         v3_fetcherPersist: true,
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
-        v3_lazyRouteDiscovery: true,
-        v3_routeConfig: true,
-        v3_singleFetch: true,
       },
     }),
     tsconfigPaths(),
@@ -40,7 +37,7 @@ export default defineConfig({
        * Include 'example-dep' in the array below.
        * @see https://vitejs.dev/config/dep-optimization-options
        */
-      include: [],
+      include: ['@sanity/client', '@sanity/image-url'],
     },
   },
 });

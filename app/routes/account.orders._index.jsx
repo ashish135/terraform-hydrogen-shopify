@@ -4,6 +4,7 @@ import {
   getPaginationVariables,
   flattenConnection,
 } from '@shopify/hydrogen';
+import {json} from '@shopify/remix-oxygen';
 import {CUSTOMER_ORDERS_QUERY} from '~/graphql/customer-account/CustomerOrdersQuery';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 
@@ -35,7 +36,7 @@ export async function loader({request, context}) {
     throw Error('Customer orders not found');
   }
 
-  return {customer: data.customer};
+  return json({customer: data.customer});
 }
 
 export default function Orders() {

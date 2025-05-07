@@ -1,5 +1,5 @@
 import {CUSTOMER_UPDATE_MUTATION} from '~/graphql/customer-account/CustomerUpdateMutation';
-import {data} from '@shopify/remix-oxygen';
+import {json} from '@shopify/remix-oxygen';
 import {
   Form,
   useActionData,
@@ -20,7 +20,7 @@ export const meta = () => {
 export async function loader({context}) {
   await context.customerAccount.handleAuthStatus();
 
-  return {};
+  return json({});
 }
 
 /**
@@ -30,7 +30,7 @@ export async function action({request, context}) {
   const {customerAccount} = context;
 
   if (request.method !== 'PUT') {
-    return data({error: 'Method not allowed'}, {status: 405});
+    return json({error: 'Method not allowed'}, {status: 405});
   }
 
   const form = await request.formData();
@@ -65,12 +65,12 @@ export async function action({request, context}) {
       throw new Error('Customer profile update failed.');
     }
 
-    return {
+    return json({
       error: null,
       customer: data?.customerUpdate?.customer,
-    };
+    });
   } catch (error) {
-    return data(
+    return json(
       {error: error.message, customer: null},
       {
         status: 400,

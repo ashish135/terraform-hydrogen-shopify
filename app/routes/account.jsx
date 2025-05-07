@@ -1,4 +1,4 @@
-import {data as remixData} from '@shopify/remix-oxygen';
+import {json} from '@shopify/remix-oxygen';
 import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
 
@@ -18,7 +18,7 @@ export async function loader({context}) {
     throw new Error('Customer not found');
   }
 
-  return remixData(
+  return json(
     {customer: data.customer},
     {
       headers: {

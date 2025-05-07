@@ -1,4 +1,5 @@
 import {useLoaderData, Link} from '@remix-run/react';
+import {defer} from '@shopify/remix-oxygen';
 import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 
@@ -12,7 +13,7 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return defer({...deferredData, ...criticalData});
 }
 
 /**
@@ -88,7 +89,6 @@ function CollectionItem({collection, index}) {
           aspectRatio="1/1"
           data={collection.image}
           loading={index < 3 ? 'eager' : undefined}
-          sizes="(min-width: 45em) 400px, 100vw"
         />
       )}
       <h5>{collection.title}</h5>
