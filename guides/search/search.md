@@ -41,33 +41,31 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     title
     trackingParameters
     vendor
-    selectedOrFirstAvailableVariant(
-      selectedOptions: []
-      ignoreUnknownOptions: true
-      caseInsensitiveMatch: true
-    ) {
-      id
-      image {
-        url
-        altText
-        width
-        height
-      }
-      price {
-        amount
-        currencyCode
-      }
-      compareAtPrice {
-        amount
-        currencyCode
-      }
-      selectedOptions {
-        name
-        value
-      }
-      product {
-        handle
-        title
+    variants(first: 1) {
+      nodes {
+        id
+        image {
+          url
+          altText
+          width
+          height
+        }
+        price {
+          amount
+          currencyCode
+        }
+        compareAtPrice {
+          amount
+          currencyCode
+        }
+        selectedOptions {
+          name
+          value
+        }
+        product {
+          handle
+          title
+        }
       }
     }
   }
@@ -191,7 +189,7 @@ async function search({
     return acc + nodes.length;
   }, 0);
 
-  return {term, result: {total, items}};
+  return json({term, result: {total, items}});
 }
 ```
 
@@ -212,7 +210,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
   const isRegular = !url.searchParams.has('predictive');
 
   if (!isRegular) {
-    return {}
+    return json({})
   }
 
   const searchPromise = regularSearch({request, context});
@@ -222,7 +220,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
     return {term: '', result: null, error: error.message};
   });
 
-  return await searchPromise;
+  return json(await searchPromise);
 }
 ```
 

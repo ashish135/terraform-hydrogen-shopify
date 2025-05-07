@@ -180,9 +180,7 @@ function UpdateGiftCardForm({giftCardCodes, saveAppliedCode, children}) {
     >
       {(fetcher) => {
         const code = fetcher.formData?.get('giftCardCode');
-        if (code && saveAppliedCode) {
-          saveAppliedCode(code);
-        }
+        if (code) saveAppliedCode && saveAppliedCode(code);
         return children;
       }}
     </CartForm>

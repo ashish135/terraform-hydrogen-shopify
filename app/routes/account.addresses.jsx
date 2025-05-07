@@ -1,4 +1,4 @@
-import {data} from '@shopify/remix-oxygen';
+import {json} from '@shopify/remix-oxygen';
 import {
   Form,
   useActionData,
@@ -24,7 +24,7 @@ export const meta = () => {
 export async function loader({context}) {
   await context.customerAccount.handleAuthStatus();
 
-  return {};
+  return json({});
 }
 
 /**
@@ -46,7 +46,7 @@ export async function action({request, context}) {
     // this will ensure redirecting to login never happen for mutatation
     const isLoggedIn = await customerAccount.isLoggedIn();
     if (!isLoggedIn) {
-      return data(
+      return json(
         {error: {[addressId]: 'Unauthorized'}},
         {
           status: 401,
@@ -101,21 +101,21 @@ export async function action({request, context}) {
             throw new Error('Customer address create failed.');
           }
 
-          return {
+          return json({
             error: null,
             createdAddress: data?.customerAddressCreate?.customerAddress,
             defaultAddress,
-          };
+          });
         } catch (error) {
           if (error instanceof Error) {
-            return data(
+            return json(
               {error: {[addressId]: error.message}},
               {
                 status: 400,
               },
             );
           }
-          return data(
+          return json(
             {error: {[addressId]: error}},
             {
               status: 400,
@@ -150,21 +150,21 @@ export async function action({request, context}) {
             throw new Error('Customer address update failed.');
           }
 
-          return {
+          return json({
             error: null,
             updatedAddress: address,
             defaultAddress,
-          };
+          });
         } catch (error) {
           if (error instanceof Error) {
-            return data(
+            return json(
               {error: {[addressId]: error.message}},
               {
                 status: 400,
               },
             );
           }
-          return data(
+          return json(
             {error: {[addressId]: error}},
             {
               status: 400,
@@ -195,17 +195,17 @@ export async function action({request, context}) {
             throw new Error('Customer address delete failed.');
           }
 
-          return {error: null, deletedAddress: addressId};
+          return json({error: null, deletedAddress: addressId});
         } catch (error) {
           if (error instanceof Error) {
-            return data(
+            return json(
               {error: {[addressId]: error.message}},
               {
                 status: 400,
               },
             );
           }
-          return data(
+          return json(
             {error: {[addressId]: error}},
             {
               status: 400,
@@ -215,7 +215,7 @@ export async function action({request, context}) {
       }
 
       default: {
-        return data(
+        return json(
           {error: {[addressId]: 'Method not allowed'}},
           {
             status: 405,
@@ -225,14 +225,14 @@ export async function action({request, context}) {
     }
   } catch (error) {
     if (error instanceof Error) {
-      return data(
+      return json(
         {error: error.message},
         {
           status: 400,
         },
       );
     }
-    return data(
+    return json(
       {error},
       {
         status: 400,
