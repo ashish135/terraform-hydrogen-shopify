@@ -9,7 +9,8 @@
     "dev": "shopify hydrogen dev --codegen",
     "preview": "shopify hydrogen preview --build",
     "lint": "eslint --no-error-on-unmatched-pattern --ext .js,.ts,.jsx,.tsx .",
-    "codegen": "shopify hydrogen codegen"
+    "codegen": "shopify hydrogen codegen",
+    "hydrogen":"concurrently \"shopify hydrogen dev --codegen\" \"cd sanity && npm run dev\""
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
@@ -41,6 +42,7 @@
     "@types/eslint": "^8.4.10",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
+    "concurrently": "^9.1.2",
     "eslint": "^8.20.0",
     "eslint-plugin-hydrogen": "0.12.2",
     "prettier": "^2.8.4",
